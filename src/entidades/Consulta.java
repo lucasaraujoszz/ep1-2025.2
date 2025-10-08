@@ -1,4 +1,4 @@
-package entities;
+package entidades;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -86,4 +86,14 @@ public class Consulta implements Serializable {
     public String toString() {
         return "Consulta [Paciente=" + paciente.getNome() + ", Medico=" + medico.getNome() + ", Data=" + dataHora + ", Status=" + status + "]";
     }
+
+    // Formato CSV: cpfPaciente;crmMedico;dataHora;local;status
+    public String toCSV() {
+        return getPaciente().getCpf() + ";" + 
+               getMedico().getCrm() + ";" + 
+               getDataHora().toString() + ";" + 
+               getLocal() + ";" + 
+               getStatus();
+    }
+    // O método fromCSV para Consulta será mais complexo e ficará dentro do CsvManager.
 }
