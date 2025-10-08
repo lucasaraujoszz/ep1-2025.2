@@ -8,35 +8,36 @@ import java.util.List;
 
 public class HospitalManager {
 
-    // Nomes dos arquivos onde os dados serão guardados
+    // Nomes dos arquivos de dados
     private static final String PACIENTES_FILE = "pacientes.csv";
     private static final String MEDICOS_FILE = "medicos.csv";
     private static final String PLANOS_SAUDE_FILE = "planos.csv";
     private static final String CONSULTAS_FILE = "consultas.csv";
     private static final String INTERNACOES_FILE = "internacoes.csv";
 
-    // Listas para guardar todos os dados em memória
+    // Listas para guardar os dados em memória
     private List<Paciente> pacientes;
     private List<Medico> medicos;
     private List<PlanoDeSaude> planosDeSaude;
     private List<Consulta> consultas;
     private List<Internacao> internacoes;
 
-    // Construtor
+    // --- Construtor ---
     public HospitalManager() {
         System.out.println("Iniciando sistema e carregando dados dos arquivos...");
 
-        // Tenta carregar as listas a partir dos arquivos CSV
-        this.pacientes = CsvManager.carregarPacientes(PACIENTES_FILE);
-        this.medicos = CsvManager.carregarMedicos(MEDICOS_FILE);
         this.planosDeSaude = CsvManager.carregarPlanosDeSaude(PLANOS_SAUDE_FILE);
+        this.medicos = CsvManager.carregarMedicos(MEDICOS_FILE);
+        
+        this.pacientes = CsvManager.carregarPacientes(PACIENTES_FILE, this.planosDeSaude);
+
         this.consultas = CsvManager.carregarConsultas(CONSULTAS_FILE, this.pacientes, this.medicos);
         this.internacoes = CsvManager.carregarInternacoes(INTERNACOES_FILE, this.pacientes, this.medicos);
         
         System.out.println("Carga de dados finalizada.");
     }
-
-    // Método para salvar tudo antes de fechar o programa.
+    
+    // --- Persistência ---
     public void salvarDados() {
         System.out.println("Salvando todos os dados nos arquivos...");
         CsvManager.salvarPacientes(pacientes, PACIENTES_FILE);
@@ -47,10 +48,9 @@ public class HospitalManager {
         System.out.println("Dados salvos com sucesso!");
     }
 
-    //  Métodos de Gerenciamento 
+    //  Métodos de Gerenciamento de Pacientes 
 
     public void cadastrarPaciente(Paciente paciente) {
-        // Validação de CPF duplicado
         for (Paciente p : this.pacientes) {
             if (p.getCpf().equals(paciente.getCpf())) {
                 System.out.println("Erro: CPF já cadastrado.");
@@ -81,7 +81,7 @@ public class HospitalManager {
         return null;
     }
 
-    // --- Métodos de Gerenciamento de Médicos ---
+    //  Métodos de Gerenciamento de Médicos 
 
     public void cadastrarMedico(Medico medico) {
         for (Medico m : this.medicos) {
@@ -93,7 +93,7 @@ public class HospitalManager {
         this.medicos.add(medico);
         System.out.println("Médico '" + medico.getNome() + "' cadastrado com sucesso!");
     }
-    
+
     public void listarMedicos() {
         System.out.println("\n--- Lista de Médicos Cadastrados ---");
         if (medicos.isEmpty()) {
@@ -135,5 +135,42 @@ public class HospitalManager {
         
         System.out.println("Consulta agendada com sucesso para " + paciente.getNome() + " com Dr(a). " + medico.getNome() + ".");
     }
+    
+    // --- Getters para as listas (úteis para os relatórios) ---
+    public List<Paciente> getPacientes() {
+        return pacientes;
+    }
+    
+    public List<Medico> getMedicos() {
+        return medicos;
+    }
 
+    // Dentro da classe HospitalManager
+
+    // --- Métodos de Gerenciamento de Planos de Saúde ---
+
+    public void cadastrarPlanoDeSaude(PlanoDeSaude plano) {
+        this.planosDeSaude.add(plano);
+        System.out.println("Plano de Saúde '" + plano.getNome() + "' cadastrado com sucesso!");
+    }
+
+    public PlanoDeSaude buscarPlanoPorNome(String nome) {
+        for (PlanoDeSaude plano : this.planosDeSaude) {
+            if (plano.getNome().equalsIgnoreCase(nome)) {
+                return plano;
+            }
+        }
+        return null;
+    }
+
+    public void listarPlanosDeSaude() {
+        System.out.println("\n--- Planos de Saúde Disponíveis ---");
+        if (planosDeSaude.isEmpty()) {
+            System.out.println("Nenhum plano de saúde cadastrado.");
+            return;
+        }
+        for (PlanoDeSaude plano : this.planosDeSaude) {
+            System.out.println("- " + plano.getNome());
+        }
+    }
 }
