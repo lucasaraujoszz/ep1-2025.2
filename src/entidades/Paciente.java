@@ -45,9 +45,9 @@ public class Paciente extends Pessoa {
     }
 
 
-    @Override
+   @Override
     public String toString() {
-        return "Paciente [" + super.toString() + ", Idade=" + idade + "]";
+        return "Paciente: " + getNome() + " | CPF: " + getCpf() + " | Idade: " + getIdade();
     }
     
     // Formato CSV: cpf;nome;idade
