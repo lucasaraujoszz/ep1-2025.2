@@ -38,11 +38,14 @@ public class App {
                     case 6: 
                     cadastrarNovoPlanoDeSaude(scanner, manager);
                         break;
-                    case 7: // <-- ADICIONE ESTE BLOCO
+                    case 7: 
                         registrarNovaInternacao(scanner, manager);
                         break;
-                    case 8: // <-- ADICIONE ESTE BLOCO
+                    case 8: 
                         manager.listarInternacoes();
+                        break;
+                    case 9: 
+                        darAltaPaciente(scanner, manager);
                         break;
                     case 0:
                         manager.salvarDados();
@@ -71,6 +74,7 @@ public class App {
         System.out.println("6. Cadastrar Novo Plano de Saúde");
         System.out.println("7. Registrar Internação");
         System.out.println("8. Listar Internações");
+        System.out.println("9. Dar Alta a Paciente");
         // Futuras opções: Registrar Internação, Relatórios, etc.
         System.out.println("0. Sair e Salvar");
         System.out.print("Escolha uma opção: ");
@@ -187,7 +191,12 @@ public class App {
         System.out.print("Digite o local da consulta (ex: Consultório 101): ");
         String local = scanner.nextLine();
 
-        manager.agendarConsulta(paciente, medico, dataHora, local);
+        Consulta novaConsulta = manager.agendarConsulta(paciente, medico, dataHora, local);
+
+        if (novaConsulta != null) {
+            double custoFinal = novaConsulta.calcularCusto();
+            System.out.println("Custo final da consulta: R$ " + String.format("%.2f", custoFinal));
+        }
     }
 
    
@@ -223,5 +232,13 @@ public class App {
         String quarto = scanner.nextLine();
 
         manager.registrarInternacao(paciente, medico, quarto);
+    }
+
+    private static void darAltaPaciente(Scanner scanner, HospitalManager manager) {
+        System.out.println("\n--- Dar Alta a Paciente ---");
+        System.out.print("Digite o CPF do paciente que receberá alta: ");
+        String cpf = scanner.nextLine();
+        
+        manager.finalizarInternacao(cpf);
     }
 }

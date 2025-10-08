@@ -96,4 +96,26 @@ public class Consulta implements Serializable {
                getStatus();
     }
     // O método fromCSV para Consulta será mais complexo e ficará dentro do CsvManager.
+
+    /**
+     * Calcula o custo final da consulta, aplicando regras de desconto.
+     * @return O valor final da consulta em double.
+     */
+    public double calcularCusto() {
+        double custoBase = this.getMedico().getCustoDaConsulta();
+        Paciente paciente = this.getPaciente();
+
+        System.out.println("Custo base da consulta: R$ " + String.format("%.2f", custoBase));
+
+        // Regra 1: Desconto para pacientes com 60+ anos
+        if (paciente.getIdade() >= 60) {
+            double desconto = custoBase * 0.20; 
+            custoBase -= desconto;
+            System.out.println("Aplicado desconto de 20% por idade (60+): - R$ " + String.format("%.2f", desconto));
+        }
+
+        // Futuramente, aqui entrará a lógica de desconto do plano de saúde (polimorfismo)
+
+        return custoBase;
+    }
 }

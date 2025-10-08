@@ -118,16 +118,16 @@ public class HospitalManager {
 
     //  Métodos de Gerenciamento de Consultas 
 
-    public void agendarConsulta(Paciente paciente, Medico medico, LocalDateTime horario, String local) {
+    public Consulta agendarConsulta(Paciente paciente, Medico medico, LocalDateTime horario, String local) {
         if (!medico.verificarDisponibilidade(horario)) {
             System.out.println("Erro: O médico " + medico.getNome() + " já possui um agendamento neste horário.");
-            return;
+            return null; // Retorna nulo em caso de erro
         }
         
         for (Consulta c : this.consultas) {
             if (c.getLocal().equalsIgnoreCase(local) && c.getDataHora().equals(horario)) {
                  System.out.println("Erro: Já existe uma consulta agendada para este local e horário.");
-                 return;
+                 return null; // Retorna nulo em caso de erro
             }
         }
 
@@ -136,8 +136,8 @@ public class HospitalManager {
         medico.agendarHorario(horario);
         
         System.out.println("Consulta agendada com sucesso para " + paciente.getNome() + " com Dr(a). " + medico.getNome() + ".");
+        return novaConsulta; 
     }
-    
     // --- Getters para as listas (úteis para os relatórios) ---
     public List<Paciente> getPacientes() {
         return pacientes;
@@ -215,6 +215,27 @@ public class HospitalManager {
                                " | Quarto: " + i.getQuarto() + 
                                " | Data Entrada: " + i.getDataEntrada() +
                                " | Status: " + status);
+        }
+    }
+
+     public void finalizarInternacao(String cpfPaciente) {
+        Internacao internacaoAtiva = null;
+
+        // Procura pela internação ativa do paciente com o CPF fornecido
+        for (Internacao internacao : this.internacoes) {
+            if (internacao.getPaciente().getCpf().equals(cpfPaciente) && internacao.getDataSaida() == null) {
+                internacaoAtiva = internacao;
+                break; 
+            }
+        }
+
+        // Se uma internação ativa foi encontrada, registra a alta
+        if (internacaoAtiva != null) {
+            internacaoAtiva.setDataSaida(LocalDate.now()); // Define a data de saída como a data atual
+            System.out.println("Alta registrada para o paciente " + internacaoAtiva.getPaciente().getNome() + ".");
+            System.out.println("O quarto " + internacaoAtiva.getQuarto() + " agora está livre.");
+        } else {
+            System.out.println("Erro: Nenhuma internação ativa encontrada para o paciente com CPF " + cpfPaciente + ".");
         }
     }
 }
