@@ -1,0 +1,14 @@
+# Arquivos de dados gerados pelo sistema
+*.csv
+
+# Pasta de arquivos compilados (.class) que o Java gera
+# (O VS Code geralmente usa uma pasta 'bin')
+bin/
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+
+# Arquivos de configuração do sistema operacional
+.DS_Store
+Thumbs.db
