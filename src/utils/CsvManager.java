@@ -27,27 +27,39 @@ public class CsvManager {
         }
     }
 
-    public static List<Paciente> carregarPacientes(String filename) {
+    public static List<Paciente> carregarPacientes(String filename, List<PlanoDeSaude> todosOsPlanos) {
         List<Paciente> pacientes = new ArrayList<>();
         File file = new File(filename);
-
-        if (!file.exists()) {
-            // Se o arquivo não existe, simplesmente retorna uma lista vazia.
-            return pacientes;
-        }
+        if (!file.exists()) return pacientes;
 
         try (Scanner scanner = new Scanner(file)) {
-            if (scanner.hasNextLine()) {
-                scanner.nextLine(); // Pula a linha do cabeçalho
-            }
-
+            scanner.nextLine(); // Pula o cabeçalho
             while (scanner.hasNextLine()) {
-                String linha = scanner.nextLine();
-                pacientes.add(Paciente.fromCSV(linha));
+                String[] fields = scanner.nextLine().split(";");
+                String cpf = fields[0];
+                String nome = fields[1];
+                int idade = Integer.parseInt(fields[2]);
+                String tipo = fields[3];
+
+                if (tipo.equals("ESPECIAL")) {
+                    String nomePlano = fields[4];
+                    
+                    PlanoDeSaude planoEncontrado = null;
+                    for (PlanoDeSaude plano : todosOsPlanos) {
+                        if (plano.getNome().equals(nomePlano)) {
+                            planoEncontrado = plano;
+                            break; 
+                        }
+                    }
+                    
+                    if (planoEncontrado != null) {
+                        pacientes.add(new PacienteEspecial(nome, cpf, idade, planoEncontrado));
+                    }
+                } else { // Se for "COMUM"
+                    pacientes.add(new Paciente(nome, cpf, idade));
+                }
             }
-        } catch (FileNotFoundException e) {
-            // Este erro não deve acontecer por causa da verificação file.exists() acima.
-        }
+        } catch (FileNotFoundException e) { /* Ignorado */ }
         return pacientes;
     }
 
