@@ -50,9 +50,10 @@ public class Paciente extends Pessoa {
         return "Paciente: " + getNome() + " | CPF: " + getCpf() + " | Idade: " + getIdade();
     }
     
-    // Formato CSV: cpf;nome;idade
+    // Formato CSV: cpf;nome;idade;tipo;plano_saude_nome
     public String toCSV() {
-        return getCpf() + ";" + getNome() + ";" + getIdade();
+        // Pacientes comuns não têm plano de saúde, então salvamos "N/A"
+        return getCpf() + ";" + getNome() + ";" + getIdade() + ";COMUM;N/A";
     }
 
     public static Paciente fromCSV(String csvLine) {

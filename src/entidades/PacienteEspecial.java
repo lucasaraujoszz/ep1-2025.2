@@ -1,4 +1,4 @@
-package entities;
+package entidades;
 
 public class PacienteEspecial extends Paciente {
 
@@ -23,5 +23,11 @@ public class PacienteEspecial extends Paciente {
     @Override
     public String toString() {
         return "PacienteEspecial [" + super.toString() + ", planoDeSaude=" + planoDeSaude + "]";
+    }
+
+     @Override
+    public String toCSV() {
+        // Pacientes especiais salvam seu tipo e o nome do plano de saúde
+        return getCpf() + ";" + getNome() + ";" + getIdade() + ";ESPECIAL;" + getPlanoDeSaude().getNome();
     }
 }
