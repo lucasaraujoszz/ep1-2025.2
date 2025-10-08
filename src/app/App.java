@@ -38,6 +38,12 @@ public class App {
                     case 6: 
                     cadastrarNovoPlanoDeSaude(scanner, manager);
                         break;
+                    case 7: // <-- ADICIONE ESTE BLOCO
+                        registrarNovaInternacao(scanner, manager);
+                        break;
+                    case 8: // <-- ADICIONE ESTE BLOCO
+                        manager.listarInternacoes();
+                        break;
                     case 0:
                         manager.salvarDados();
                         System.out.println("Saindo do sistema... Até logo!");
@@ -63,6 +69,8 @@ public class App {
         System.out.println("4. Listar Médicos");
         System.out.println("5. Agendar Consulta");
         System.out.println("6. Cadastrar Novo Plano de Saúde");
+        System.out.println("7. Registrar Internação");
+        System.out.println("8. Listar Internações");
         // Futuras opções: Registrar Internação, Relatórios, etc.
         System.out.println("0. Sair e Salvar");
         System.out.print("Escolha uma opção: ");
@@ -153,13 +161,26 @@ public class App {
             return;
         }
 
-        System.out.print("Digite a data e hora da consulta (formato AAAA-MM-DDTHH:MM, ex: 2025-10-25T14:30): ");
-        String dataHoraStr = scanner.nextLine();
         LocalDateTime dataHora;
         try {
-            dataHora = LocalDateTime.parse(dataHoraStr);
+        
+            System.out.print("Digite a data da consulta (formato DD/MM/AAAA): ");
+            String dataStr = scanner.nextLine();
+            
+            // Pede a hora no formato 24h
+            System.out.print("Digite a hora da consulta (formato HH:MM): ");
+            String horaStr = scanner.nextLine();
+
+            java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            
+            // Converte as strings de texto em objetos de Data e Hora
+            java.time.LocalDate localDate = java.time.LocalDate.parse(dataStr, dateFormatter);
+            java.time.LocalTime localTime = java.time.LocalTime.parse(horaStr);
+            
+            dataHora = localDate.atTime(localTime);
+
         } catch (DateTimeParseException e) {
-            System.out.println("Erro: Formato de data e hora inválido. Use o formato AAAA-MM-DDTHH:MM.");
+            System.out.println("Erro: Formato de data ou hora inválido. Use os formatos DD/MM/AAAA e HH:MM.");
             return;
         }
 
@@ -169,11 +190,38 @@ public class App {
         manager.agendarConsulta(paciente, medico, dataHora, local);
     }
 
+   
     private static void cadastrarNovoPlanoDeSaude(Scanner scanner, HospitalManager manager) {
         System.out.println("\n--- Cadastro de Novo Plano de Saúde ---");
         System.out.print("Nome do Plano: ");
         String nome = scanner.nextLine();
         PlanoDeSaude novoPlano = new PlanoDeSaude(nome);
         manager.cadastrarPlanoDeSaude(novoPlano);
+    }
+
+    private static void registrarNovaInternacao(Scanner scanner, HospitalManager manager) {
+        System.out.println("\n--- Registrar Nova Internação ---");
+        System.out.print("Digite o CPF do paciente a ser internado: ");
+        String cpf = scanner.nextLine();
+        Paciente paciente = manager.buscarPacientePorCpf(cpf);
+
+        if (paciente == null) {
+            System.out.println("Erro: Paciente com CPF " + cpf + " não encontrado.");
+            return;
+        }
+
+        System.out.print("Digite o CRM do médico responsável: ");
+        String crm = scanner.nextLine();
+        Medico medico = manager.buscarMedicoPorCrm(crm);
+
+        if (medico == null) {
+            System.out.println("Erro: Médico com CRM " + crm + " não encontrado.");
+            return;
+        }
+
+        System.out.print("Digite o número do quarto para internação: ");
+        String quarto = scanner.nextLine();
+
+        manager.registrarInternacao(paciente, medico, quarto);
     }
 }
