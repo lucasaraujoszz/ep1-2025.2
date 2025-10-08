@@ -1,4 +1,4 @@
-package entities;
+package entidades;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -77,4 +77,15 @@ public class Medico extends Pessoa{
                " | Especialidade: " + especialidade +
                " | Custo da Consulta: R$ " + String.format("%.2f", custoDaConsulta);
     }
+
+    // Formato CSV: crm;nome;especialidade;custoConsulta
+    public String toCSV() {
+        return getCrm() + ";" + getNome() + ";" + getEspecialidade() + ";" + getCustoDaConsulta();
+    }
+
+    public static Medico fromCSV(String csvLine) {
+        String[] fields = csvLine.split(";");
+        return new Medico(fields[1], "N/A", fields[0], fields[2], Double.parseDouble(fields[3]));
+    }
+
 }
