@@ -2,6 +2,8 @@ package app;
 
 import entidades.*;
 import utils.CsvManager;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -171,6 +173,48 @@ public class HospitalManager {
         }
         for (PlanoDeSaude plano : this.planosDeSaude) {
             System.out.println("- " + plano.getNome());
+        }
+    }
+
+    // --- Métodos de Gerenciamento de Internações 
+
+    /**
+     * Registra uma nova internação, validando se o quarto está vago.
+     */
+    public void registrarInternacao(Paciente paciente, Medico medico, String quarto) {
+        // Validação: Verifica se o quarto já está ocupado por um paciente não liberado
+        for (Internacao internacaoExistente : this.internacoes) {
+            if (internacaoExistente.getQuarto().equalsIgnoreCase(quarto) && internacaoExistente.getDataSaida() == null) {
+                System.out.println("Erro: O quarto " + quarto + " já está ocupado pelo paciente " + internacaoExistente.getPaciente().getNome() + ".");
+                return; // Interrompe a operação
+            }
+        }
+
+        // Se o quarto está livre, cria a nova internação
+        LocalDate dataEntrada = LocalDate.now(); // Pega a data atual
+        Internacao novaInternacao = new Internacao(paciente, medico, dataEntrada, quarto);
+
+        this.internacoes.add(novaInternacao);
+        paciente.adicionarInternacaoAoHistorico(novaInternacao); // Adiciona ao histórico do paciente
+
+        System.out.println("Paciente " + paciente.getNome() + " internado com sucesso no quarto " + quarto + ".");
+    }
+
+    /**
+     * Exibe a lista de todas as internações (ativas e passadas).
+     */
+    public void listarInternacoes() {
+        System.out.println("\n--- Histórico de Internações ---");
+        if (internacoes.isEmpty()) {
+            System.out.println("Nenhuma internação registrada.");
+            return;
+        }
+        for (Internacao i : this.internacoes) {
+            String status = (i.getDataSaida() == null) ? "ATIVO" : "FINALIZADO";
+            System.out.println("Paciente: " + i.getPaciente().getNome() + 
+                               " | Quarto: " + i.getQuarto() + 
+                               " | Data Entrada: " + i.getDataEntrada() +
+                               " | Status: " + status);
         }
     }
 }
