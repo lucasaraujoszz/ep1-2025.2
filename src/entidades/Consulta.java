@@ -101,21 +101,34 @@ public class Consulta implements Serializable {
      * Calcula o custo final da consulta, aplicando regras de desconto.
      * @return O valor final da consulta em double.
      */
-    public double calcularCusto() {
-        double custoBase = this.getMedico().getCustoDaConsulta();
+  public double calcularCusto() {
+        double custoAtual = this.getMedico().getCustoDaConsulta();
         Paciente paciente = this.getPaciente();
 
-        System.out.println("Custo base da consulta: R$ " + String.format("%.2f", custoBase));
+        System.out.println("Custo base da consulta: R$ " + String.format("%.2f", custoAtual));
 
-        // Regra 1: Desconto para pacientes com 60+ anos
+        // Aplica desconto para pacientes com 60+ anos
         if (paciente.getIdade() >= 60) {
-            double desconto = custoBase * 0.20; 
-            custoBase -= desconto;
-            System.out.println("Aplicado desconto de 20% por idade (60+): - R$ " + String.format("%.2f", desconto));
+            double descontoIdade = custoAtual * 0.20; // 20% de desconto
+            custoAtual -= descontoIdade;
+            System.out.println("Aplicado desconto de 20% por idade (60+): - R$ " + String.format("%.2f", descontoIdade));
         }
 
-        // Futuramente, aqui entrará a lógica de desconto do plano de saúde (polimorfismo)
+        // Aplica desconto por Plano de Saúde, se houver
+        if (paciente instanceof PacienteEspecial) {
+            PacienteEspecial pacienteEspecial = (PacienteEspecial) paciente;
+            PlanoDeSaude plano = pacienteEspecial.getPlanoDeSaude();
+            String especialidadeMedico = this.getMedico().getEspecialidade();
+            double descontoPlano = plano.getDesconto(especialidadeMedico);
 
-        return custoBase;
+            if (descontoPlano > 0) {
+                double valorDesconto = custoAtual * descontoPlano;
+                custoAtual -= valorDesconto;
+                System.out.println("Aplicado desconto de " + (descontoPlano * 100) + "% do plano '" + plano.getNome() + "': - R$ " + String.format("%.2f", valorDesconto));
+            }
+        }
+
+        return custoAtual;
     }
+
 }

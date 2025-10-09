@@ -9,9 +9,24 @@ import java.util.Scanner;
 public class App {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        HospitalManager manager = new HospitalManager();
-        boolean executando = true;
+    Scanner scanner = new Scanner(System.in);
+    HospitalManager manager = new HospitalManager();
+
+    PlanoDeSaude planoOuro = manager.buscarPlanoPorNome("Plano Ouro");
+    
+    // Se o plano ainda não existe, cria e cadastra.
+    if (planoOuro == null) {
+        planoOuro = new PlanoDeSaude("Plano Ouro"); 
+        manager.cadastrarPlanoDeSaude(planoOuro);
+        System.out.println("INFO: Plano de saúde 'Plano Ouro' de teste foi criado.");
+    }
+    
+    planoOuro.adicionarDesconto("Cardiologia", 0.50);
+    planoOuro.adicionarDesconto("Ortopedia", 0.30);
+    System.out.println("INFO: Descontos de teste para 'Plano Ouro' foram garantidos.");
+
+    // 3. Loop principal do menu.
+    boolean executando = true;
 
         while (executando) {
             exibirMenu();
@@ -241,4 +256,5 @@ public class App {
         
         manager.finalizarInternacao(cpf);
     }
+
 }
