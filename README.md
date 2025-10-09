@@ -10,45 +10,65 @@ Desenvolvimento de um sistema de gerenciamento hospitalar utilizando os conceito
 
 ## Dados do Aluno
 
-- **Nome completo:** [Preencher aqui]
-- **Matrícula:** [Preencher aqui]
-- **Curso:** [Preencher aqui]
-- **Turma:** [Preencher aqui]
+- **Nome completo:** [Lucas Araújo Lima]
+- **Matrícula:** [242024244]
+- **Curso:** [Engenharia de software]
+- **Turma:** [ ]
 
 ---
 
 ## Instruções para Compilação e Execução
 
 1. **Compilação:**  
-   [Descrever aqui como compilar o projeto. Exemplo: `javac Main.java` ou o script usado]
+   [Usado compilador integrado do VScode]
 
 2. **Execução:**  
-   [Descrever aqui como executar o projeto. Exemplo: `java Main` ou o script usado]
+   [Baixar o projeto,descompactar o projeto,abir o projeto com o VScode,entrar no arquivo src/app/App.java,Clicar na opção runner do VScode]
 
 3. **Estrutura de Pastas:**  
-   [Descrever aqui as principais pastas do projeto]
+   [ep1-2025.2/ 
+│
+├── src/
+│   ├── app/
+│   │   ├── App.java
+│   │   └── HospitalManager.java
+│   │
+│   ├── entidades/
+│   │   ├── Consulta.java
+│   │   ├── Internacao.java
+│   │   ├── Medico.java
+│   │   ├── Paciente.java
+│   │   ├── PacienteEspecial.java
+│   │   ├── Pessoa.java
+│   │   └── PlanoDeSaude.java
+│   │
+│   └── utils/
+│       └── CsvManager.java
+│
+├── .gitignore
+├── README.md]
 
 3. **Versão do JAVA utilizada:**  
-   [Descrever aqui como versão do JAVA utilizada no projeto. Sugestão: `java 21`]
+   [java 21]
 
 ---
 
 ## Vídeo de Demonstração
 
-- [Inserir o link para o vídeo no YouTube/Drive aqui]
+- [https://www.youtube.com/watch?v=XcnnYnN9EIE]
 
 ---
 
 ## Prints da Execução
 
 1. Menu Principal:  
-   ![Inserir Print 1](caminho/do/print1.png)
+   ![Print do Menu principal](/ep1-2025.2/src/static/Imagem1.png)
 
 2. Cadastro de Médico:  
-   ![Inserir Print 2](caminho/do/print2.png)
+   ![Print do cadastro de Médico](/ep1-2025.2/src/static/Imagem2.png)
 
 3. Relatório de ?:  
-   ![Inserir Print 3](caminho/do/print3.png)
+   ![Print do cadastro de Paciente](/ep1-2025.2/src/static/Imagem3.png)
 
 ---
 
@@ -56,13 +76,13 @@ Desenvolvimento de um sistema de gerenciamento hospitalar utilizando os conceito
 
 ## Observações (Extras ou Dificuldades)
 
-- [Espaço para o aluno comentar qualquer funcionalidade extra que implementou, dificuldades enfrentadas, ou considerações importantes.]
+- [Minha dificuldade principal foi se organizar na fase inicial do projeto,após ter uma estrutura inicial feita o caminho se torna mais fácil.Acabei deixando o projeto para última hora e fiquei com o tempo contado,isso me atrapalhou a cumprir todas funcionalidades nescessárias e também na organização do projeto.]
 
 ---
 
 ## Contato
 
-- [Opcional: E-mail pessoal do aluno.]
+- [lucasaraujolima929@gmail.com]
 
 ---
 
