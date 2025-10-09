@@ -20,9 +20,12 @@ public class PacienteEspecial extends Paciente {
         this.planoDeSaude = planoDeSaude;
     }
 
-    @Override
+     @Override
     public String toString() {
-        return "PacienteEspecial [" + super.toString() + ", planoDeSaude=" + planoDeSaude + "]";
+        String infoBaseDoPaciente = super.toString();
+        
+        // Adiciona a informação do plano de saúde de forma organizada
+        return infoBaseDoPaciente + " | Plano: " + this.getPlanoDeSaude().getNome();
     }
 
      @Override
