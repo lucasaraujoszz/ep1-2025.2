@@ -238,4 +238,32 @@ public class HospitalManager {
             System.out.println("Erro: Nenhuma internação ativa encontrada para o paciente com CPF " + cpfPaciente + ".");
         }
     }
+    // --- Métodos de Relatórios ---
+
+    public void relatorioPacientesInternados() {
+        System.out.println("\n--- RELATÓRIO: PACIENTES INTERNADOS ATUALMENTE ---");
+        
+        boolean encontrouAlgum = false;
+        for (Internacao internacao : this.internacoes) {
+            // A condição para uma internação estar ativa é a data de saída ser nula
+            if (internacao.getDataSaida() == null) {
+                
+                // Calcula há quantos dias o paciente está internado
+                long diasInternado = java.time.temporal.ChronoUnit.DAYS.between(internacao.getDataEntrada(), java.time.LocalDate.now());
+
+                System.out.println(
+                    "Paciente: " + internacao.getPaciente().getNome() +
+                    " | Quarto: " + internacao.getQuarto() +
+                    " | Médico: Dr(a). " + internacao.getMedicoResponsavel().getNome() +
+                    " | Dias de Internação: " + diasInternado
+                );
+                encontrouAlgum = true;
+            }
+        }
+
+        if (!encontrouAlgum) {
+            System.out.println("Nenhum paciente internado no momento.");
+        }
+        System.out.println("----------------------------------------------------");
+    }
 }

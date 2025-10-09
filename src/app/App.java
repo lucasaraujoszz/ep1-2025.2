@@ -62,6 +62,9 @@ public class App {
                     case 9: 
                         darAltaPaciente(scanner, manager);
                         break;
+                    case 10: 
+                        manager.relatorioPacientesInternados();
+                        break;
                     case 0:
                         manager.salvarDados();
                         System.out.println("Saindo do sistema... Até logo!");
@@ -90,6 +93,7 @@ public class App {
         System.out.println("7. Registrar Internação");
         System.out.println("8. Listar Internações");
         System.out.println("9. Dar Alta a Paciente");
+        System.out.println("10. Relatório: Pacientes Internados");
         // Futuras opções: Registrar Internação, Relatórios, etc.
         System.out.println("0. Sair e Salvar");
         System.out.print("Escolha uma opção: ");
