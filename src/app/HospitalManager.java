@@ -266,4 +266,42 @@ public class HospitalManager {
         }
         System.out.println("----------------------------------------------------");
     }
+
+    public void relatorioConsultasFuturas() {
+        System.out.println("\n--- RELATÓRIO: CONSULTAS AGENDADAS FUTURAS ---");
+        LocalDateTime agora = LocalDateTime.now();
+        boolean encontrouAlguma = false;
+
+        for (Consulta consulta : this.consultas) {
+            // Verifica se a data da consulta é DEPOIS de agora
+            if (consulta.getDataHora().isAfter(agora)) {
+                System.out.println(consulta.toString());
+                encontrouAlguma = true;
+            }
+        }
+
+        if (!encontrouAlguma) {
+            System.out.println("Nenhuma consulta futura agendada.");
+        }
+        System.out.println("---------------------------------------------");
+    }
+
+    public void relatorioConsultasPassadas() {
+        System.out.println("\n--- RELATÓRIO: CONSULTAS JÁ REALIZADAS/PASSADAS ---");
+        LocalDateTime agora = LocalDateTime.now();
+        boolean encontrouAlguma = false;
+
+        for (Consulta consulta : this.consultas) {
+            // Verifica se a data da consulta é ANTES de agora
+            if (consulta.getDataHora().isBefore(agora)) {
+                System.out.println(consulta.toString());
+                encontrouAlguma = true;
+            }
+        }
+
+        if (!encontrouAlguma) {
+            System.out.println("Nenhum histórico de consultas passadas.");
+        }
+        System.out.println("--------------------------------------------------");
+    }
 }
